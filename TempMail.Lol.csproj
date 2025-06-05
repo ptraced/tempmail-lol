@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    
+    <!-- Package Information -->
+    <PackageId>TempMail.Lol</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Justxn</Authors>
+    <Description>A C# wrapper for the TempMail.lol temporary email service API. Create temporary email addresses and retrieve emails programmatically.</Description>
+    <PackageTags>tempmail;temporary-email;disposable-email;email;api;client</PackageTags>
+    <PackageProjectUrl>https://tempmail.lol</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ptraced/tempmail-lol</RepositoryUrl>
+    <Copyright>Copyright (c) 2025</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    
+    <!-- Documentation -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project> 
