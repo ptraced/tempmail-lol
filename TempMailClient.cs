@@ -14,7 +14,7 @@ public class TempMailClient : IDisposable
     private readonly JsonSerializerOptions _jsonOptions;
     private bool _disposed;
 
-    private const string BaseUrl = "https://api.tempmail.lol";
+    private const string BaseUrl = "https://api.tempmail.lol/v2";
 
     /// <summary>
     /// Initializes a new instance of the TempMailClient.
@@ -25,7 +25,6 @@ public class TempMailClient : IDisposable
     {
         _apiKey = apiKey;
         _httpClient = httpClient ?? new HttpClient();
-        _httpClient.BaseAddress ??= new Uri(BaseUrl);
         
         _jsonOptions = new JsonSerializerOptions
         {
@@ -54,10 +53,11 @@ public class TempMailClient : IDisposable
         var json = JsonSerializer.Serialize(requestBody, _jsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("/generate", content, cancellationToken);
+        var response = await _httpClient.PostAsync(BaseUrl + "/inbox/create", content, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
+        Console.WriteLine(responseJson);
         var inbox = JsonSerializer.Deserialize<Inbox>(responseJson, _jsonOptions);
         
         return inbox ?? throw new JsonException("Failed to deserialize inbox response");
@@ -79,7 +79,7 @@ public class TempMailClient : IDisposable
 
         try
         {
-            var response = await _httpClient.GetAsync($"/check/{token}", cancellationToken);
+            var response = await _httpClient.GetAsync(BaseUrl + $"/inbox?token={token}", cancellationToken);
             
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -89,6 +89,7 @@ public class TempMailClient : IDisposable
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
+            Console.WriteLine(responseJson);
             var emails = JsonSerializer.Deserialize<Email[]>(responseJson, _jsonOptions);
             
             return emails ?? Array.Empty<Email>();
@@ -137,7 +138,7 @@ public class TempMailClient : IDisposable
         var json = JsonSerializer.Serialize(requestBody, _jsonOptions);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync("/webhook", content, cancellationToken);
+        var response = await _httpClient.PostAsync(BaseUrl + "/webhook", content, cancellationToken);
         response.EnsureSuccessStatusCode();
     }
 
@@ -153,7 +154,7 @@ public class TempMailClient : IDisposable
         if (string.IsNullOrEmpty(_apiKey))
             throw new InvalidOperationException("API key is required for webhook operations");
 
-        var response = await _httpClient.DeleteAsync("/webhook", cancellationToken);
+        var response = await _httpClient.DeleteAsync(BaseUrl + "/webhook", cancellationToken);
         response.EnsureSuccessStatusCode();
     }
 
