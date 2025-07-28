@@ -10,7 +10,7 @@
     
     <!-- Package Information -->
     <PackageId>TempMail.Lol</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Justxn</Authors>
     <Description>A C# wrapper for the TempMail.lol temporary email service API. Create temporary email addresses and retrieve emails programmatically.</Description>
     <PackageTags>tempmail;temporary-email;disposable-email;email;api;client</PackageTags>
@@ -26,8 +26,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
+    <PackageReference Include="System.Text.Json" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
