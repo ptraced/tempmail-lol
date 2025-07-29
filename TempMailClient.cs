@@ -57,7 +57,6 @@ public class TempMailClient : IDisposable
         response.EnsureSuccessStatusCode();
 
         var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
-        Console.WriteLine(responseJson);
         var inbox = JsonSerializer.Deserialize<Inbox>(responseJson, _jsonOptions);
         
         return inbox ?? throw new JsonException("Failed to deserialize inbox response");
@@ -72,7 +71,7 @@ public class TempMailClient : IDisposable
     /// <exception cref="ArgumentNullException">Thrown when token is null or empty.</exception>
     /// <exception cref="HttpRequestException">Thrown when the API request fails.</exception>
     /// <exception cref="JsonException">Thrown when the response cannot be parsed.</exception>
-    public async Task<IReadOnlyList<Email>?> CheckInboxAsync(string token, CancellationToken cancellationToken = default)
+    public async Task<Emails> CheckInboxAsync(string token, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(token))
             throw new ArgumentNullException(nameof(token));
@@ -89,10 +88,8 @@ public class TempMailClient : IDisposable
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
-            Console.WriteLine(responseJson);
-            var emails = JsonSerializer.Deserialize<Email[]>(responseJson, _jsonOptions);
             
-            return emails ?? Array.Empty<Email>();
+            return JsonSerializer.Deserialize<Emails>(responseJson);
         }
         catch (HttpRequestException)
         {
@@ -109,7 +106,7 @@ public class TempMailClient : IDisposable
     /// <exception cref="ArgumentNullException">Thrown when inbox is null.</exception>
     /// <exception cref="HttpRequestException">Thrown when the API request fails.</exception>
     /// <exception cref="JsonException">Thrown when the response cannot be parsed.</exception>
-    public async Task<IReadOnlyList<Email>?> CheckInboxAsync(Inbox inbox, CancellationToken cancellationToken = default)
+    public async Task<Emails> CheckInboxAsync(Inbox inbox, CancellationToken cancellationToken = default)
     {
         if (inbox == null)
             throw new ArgumentNullException(nameof(inbox));

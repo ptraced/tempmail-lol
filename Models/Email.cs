@@ -2,6 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace TempMail.Lol.Models;
 
+public class Emails
+{
+    public List<Email> emails { get; set; }
+    public bool expired { get; set; }
+}
+
+
 /// <summary>
 /// Represents an email message received in a temporary email inbox.
 /// </summary>
